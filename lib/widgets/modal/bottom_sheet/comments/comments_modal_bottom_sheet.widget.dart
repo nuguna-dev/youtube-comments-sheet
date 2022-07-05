@@ -80,7 +80,7 @@ class _CommentsModalBottomSheetState extends State<CommentsModalBottomSheet> {
   }
 
   void setHeightToMax(BuildContext context) {
-    final maxHeight = MediaQuery.of(context).size.height;
+    final maxHeight = MediaQuery.of(context).size.height - kToolbarHeight;
     setState(() {
       height = maxHeight;
     });
@@ -94,38 +94,36 @@ class _CommentsModalBottomSheetState extends State<CommentsModalBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Builder(builder: (context) {
-        return GestureDetector(
-          onVerticalDragUpdate: handleVerticalDragUpdate,
-          onVerticalDragEnd: (detail) => handleVerticalDragEnd(context, detail),
-          child: Container(
-            height: height,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Colors.grey[200],
-            ),
-            child: Column(
-              children: [
-                Container(
-                  height: 50,
-                  color: Colors.indigo[300],
-                  child: const Center(child: Text("바텀 시트 드래그 영역")),
+    return GestureDetector(
+      onVerticalDragUpdate: handleVerticalDragUpdate,
+      onVerticalDragEnd: (detail) => handleVerticalDragEnd(context, detail),
+      child: Container(
+        height: height,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: Colors.grey[200],
+        ),
+        child: SafeArea(
+          child: Column(
+            children: [
+              Container(
+                height: 50,
+                color: Colors.indigo[300],
+                child: const Center(child: Text("바텀 시트 드래그 영역")),
+              ),
+              Expanded(
+                child: ListView(
+                  children: [
+                    for (var i = 0; i < 70; ++i)
+                      ListTile(title: Text("Item $i"))
+                  ],
                 ),
-                Expanded(
-                  child: ListView(
-                    children: [
-                      for (var i = 0; i < 70; ++i)
-                        ListTile(title: Text("Item $i"))
-                    ],
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
-        );
-      }),
+        ),
+      ),
     );
   }
 }
